@@ -1,5 +1,6 @@
 
 import {useQuery} from 'react-query';
+import {useEffect,useState,useRef} from "react";
 interface Comment {
     email: string;
     name: string
@@ -23,22 +24,15 @@ async function deletePost(postId) {
     return response.json();
 }
 
-// async function updatePost(postId) {
-//     const response = await fetch(
-//         `https://jsonplaceholder.typicode.com/postId/${postId}`,
-//         { method: "PATCH", data: { title: "REACT QUERY FOREVER!!!!" } }
-//     );
-//     return response.json();
-// }
-
 export function PostDetail({ post }) {
-    // replace with useQuery
-    const {data,isLoading,error} = useQuery<Comment[],Error>(['comments',post.id],() => fetchComments(post.id))
+
+    const query = useQuery<Comment[],Error>(['comments',post.id],() => fetchComments(post.id),{refetchOnWindowFocus:false})
+    const {data,isLoading,error} = query
 
     return (
         <>
             <h3 style={{ color: "blue" }}>{post.title}</h3>
-            <button>Delete</button> <button>Update title</button>
+            <button>Delete</button>
             <p>{post.body}</p>
             <h4>Comments</h4>
             {data && data.map((comment) => (
