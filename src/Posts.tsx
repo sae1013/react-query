@@ -28,16 +28,14 @@ export function Posts() {
     const [maxPage,setMaxPage]= useState(10);
     const { data, isError, error, isLoading } = useQuery<Post[],Error>(["posts",currentPage], ()=> fetchPosts(currentPage as number),{});
     const queryClient = useQueryClient(); // 얘는 리렌더링되도 같은애다.
+
     useEffect(() => {
-        console.log('rerender')
         if(currentPage < maxPage) {
             queryClient.prefetchQuery(['posts',currentPage+1],()=>fetchPosts(currentPage+1),{
             })
         }
     },[currentPage,queryClient])
-    useEffect(() => {
-        console.log('매회렌더링')
-    })
+
     if (isLoading) return <h3>Loading...</h3>;
     if (isError)
         return (
@@ -70,7 +68,6 @@ export function Posts() {
                     Previous page
                 </button>
                 <span>Page {currentPage}</span>
-                <button onClick={()=>setMaxPage(maxPage+1)}>강제렌더</button>
                 <button disabled={currentPage >= maxPage} onClick={() => {
                     setCurrentPage((prev)=> prev+1)
                 }}>
