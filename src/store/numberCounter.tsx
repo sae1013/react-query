@@ -24,10 +24,10 @@ class NumberStore {
   }
 
   
-  // @computed
-  // set setNumberAction(number){
-  //   this.num = this.num+num
-  // }
+  @computed
+  get getNumberAction(){
+    return this.num
+  }
 
   @action
   addTodos(todo:Todo){
